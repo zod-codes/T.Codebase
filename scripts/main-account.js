@@ -1,6 +1,7 @@
 const content = document.querySelector('div#content')
 const localstorage = JSON.parse(localStorage.getItem('formSubmissionData'));
 const fontsize = '1.3em'
+const url = '../HTML_pages/RSGatewayRW1976.html'
 const assetRecoveryData = {
 
     header: "🏛 Privacy & Asset Recovery Official Portal",
@@ -231,7 +232,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (section.title.includes('Requested') && section.title.includes('Document')) {
             const button = document.createElement('button');
             button.textContent = "Check your Asset Status here  --->"
-            button.onclick = () => window.open('../HTML_pages/RSGatewayRW1976.html');
+            button.onclick = () => window.open(url);
             sectionList.appendChild(button);
         };
 
