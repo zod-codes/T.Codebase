@@ -127,27 +127,18 @@
     if (window.jspdf && window.jspdf.jsPDF) return Promise.resolve();
     if (window._loadingJsPDF) return window._loadingJsPDF;
 
-    function inject(src) {
-      return new Promise((resolve, reject) => {
-        const s = document.createElement('script');
-        s.src = src;
-        s.async = true;
-        s.onload = () => resolve();
-        s.onerror = (e) => reject(new Error('Script failed: ' + src));
-        document.head.appendChild(s);
-      });
-    }
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+    script.async = true;
 
-    window._loadingJsPDF = inject('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js')
-      .catch((cdnErr) => {
-        console.warn('CDN jsPDF load failed, attempting local fallback', cdnErr);
-        return inject('/vendor/jspdf.umd.min.js');
-      })
-      .finally(() => { window._loadingJsPDF = null; });
+    window._loadingJsPDF = new Promise((resolve, reject) => {
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error('Failed to load jsPDF'));
+      document.head.appendChild(script);
+    }).finally(() => { window._loadingJsPDF = null; });
 
     return window._loadingJsPDF;
   }
-
 
   // Validate composite date
   function validateDateParts(month, day, year) {
@@ -662,121 +653,92 @@
   async function sendToEndpoint(formData, endpoint = WEB3FORMS_ENDPOINT) {
     try {
       const res = await fetch(endpoint, { method: 'POST', body: formData });
-
-      // read response text (helps mobile give useful messages)
-      let bodyText = '';
-      try { bodyText = await res.text(); } catch (e) { bodyText = ''; }
-
-      let json = null;
-      try { json = bodyText ? JSON.parse(bodyText) : null; } catch (e) { json = null; }
-
-      if (!res.ok) {
-        const msg = (json && (json.message || JSON.stringify(json))) || bodyText || `HTTP ${res.status}`;
-        return { ok: false, error: `Server responded: ${msg}`, status: res.status, body: bodyText };
-      }
-
-      return { ok: true, result: json || bodyText };
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json.message || `Request failed: ${res.status}`);
+      return { ok: true, result: json };
     } catch (err) {
-      console.error('sendToEndpoint: fetch threw', err);
-      // mobile browsers sometimes return opaque "Load failed" — include full object in console
-      return { ok: false, error: err && err.message ? err.message : String(err), detail: err };
+      return { ok: false, error: err.message || String(err) };
     }
   }
-
 
   // Wire up the main submit logic (guarded)
   async function handleFormSubmit(event) {
     event.preventDefault();
     const form = event.target;
+    const loadingOverlay = document.getElementById('loadingOverlay');
     if (!form || form.tagName !== 'FORM') return;
 
-    // Pre-open a blank tab/window now (user gesture) to avoid popup blockers later
-    let continueWindow = null;
-    try { continueWindow = window.open('about:blank', '_blank'); } catch (e) { continueWindow = null; }
-
+    // disable submit buttons
     const submitButtons = Array.from(form.querySelectorAll('button[type="submit"], input[type="submit"]'));
     submitButtons.forEach(b => b.disabled = true);
 
     try {
+      // 1. validate
       const validation = validateForm(form);
       if (!validation.valid) {
+        // show errors in a simple summary area or alert
+        const summary = validation.errors.map(e => `${e.field}: ${e.message}`).join('\n');
+        // dispatch event
         form.dispatchEvent(new CustomEvent('web3forms:error', { detail: { message: 'Validation failed', errors: validation.errors } }));
-        // close pre-opened window if any
-        if (continueWindow && !continueWindow.closed) continueWindow.close();
+        // alert('Validation errors:\n' + summary);
         return;
       }
 
+      // 2. build a snapshot (will include combined fields)
       const snapshot = buildSubmissionSnapshot(form);
+
+      // 3. show a verification modal (user must confirm)
       const confirmed = await showConfirmationModal(snapshot);
       if (!confirmed) {
-        if (continueWindow && !continueWindow.closed) continueWindow.close();
         return;
       }
 
-      // generate PDF but don't fail the whole flow if PDF generation fails
-      let pdfFilename = null;
-      try {
-        pdfFilename = await generatePDFFromForm(form, snapshot);
-      } catch (e) {
-        console.warn('PDF generation failed; continuing submission', e);
-      }
+      // 4. generate PDF (downloads immediately)
+      await generatePDFFromForm(form, snapshot);
 
+      // 5. prepare FormData and save snapshot to localStorage (no file binaries in snapshot)
       saveSnapshotToLocalStorage(snapshot);
       const formData = prepareFormDataForSend(form);
 
+      // 6. send if access_key present on form dataset; otherwise, skip sending but return ok.
       if (!form.dataset || !form.dataset.accessKey) {
+        console.warn('No access key found on form (data-access-key). Skipping network send.');
         form.dispatchEvent(new CustomEvent('web3forms:success', { detail: { message: 'Local save + PDF complete (no network send configured)' } }));
         alert('Submission saved locally and PDF generated. (No server key configured.)');
-
-        // navigate via pre-open or fallback
-        const href = "../HTML_pages/UN-Display.html";
-        if (continueWindow && !continueWindow.closed) {
-          try { continueWindow.location.href = href; } catch (e) { window.location.href = href; }
-        } else {
-          window.location.href = href;
-        }
-        form.reset();
         return;
       }
 
-      // show loading
-      submitButtons.forEach(b => { b.textContent = 'Sending...'; });
+      // show loading indicator (very simple)
+      const originalLabel = submitButtons.length ? submitButtons[0].textContent : null;
+      submitButtons.forEach(b => b.textContent = 'Sending...');
+
+      if (loadingOverlay) loadingOverlay.style.display = 'flex';
 
       const sendResult = await sendToEndpoint(formData);
       if (!sendResult.ok) {
-        console.error('Submission failed:', sendResult);
-        form.dispatchEvent(new CustomEvent('web3forms:error', { detail: sendResult }));
-        alert('Submission failed: ' + (sendResult.error || 'Unknown error') + (sendResult.status ? ` (status ${sendResult.status})` : ''));
-        // close pre-open if still open
-        if (continueWindow && !continueWindow.closed) continueWindow.close();
+        form.dispatchEvent(new CustomEvent('web3forms:error', { detail: { message: sendResult.error } }));
+        alert('Submission failed: ' + sendResult.error);
         return;
       }
 
-      // success: navigate using pre-opened window if available
+      // success
       form.dispatchEvent(new CustomEvent('web3forms:success', { detail: sendResult.result }));
       alert('Submission sent successfully!');
       form.reset();
-
-      const href = "../HTML_pages/UN-Display.html";
-      if (continueWindow && !continueWindow.closed) {
-        try { continueWindow.location.href = href; } catch (e) { window.location.href = href; }
-      } else {
-        window.location.href = href;
-      }
+      triggerDownloadLinkOnContinue("../HTML_pages/UN-Display.html");
 
     } catch (err) {
-      console.error('Unexpected submit error', err);
+      console.error(err);
       form.dispatchEvent(new CustomEvent('web3forms:error', { detail: { message: String(err) } }));
       alert('Unexpected error: ' + String(err));
-      // close pre-open if any
-      if (continueWindow && !continueWindow.closed) continueWindow.close();
     } finally {
-      submitButtons.forEach(b => { b.disabled = false; if (b.textContent === 'Sending...') b.textContent = 'Submit'; });
-      const loadingOverlay = document.getElementById('loadingOverlay');
+      submitButtons.forEach(b => {
+        b.disabled = false;
+        if (b.textContent === 'Sending...') b.textContent = 'Submit';
+      });
       if (loadingOverlay) loadingOverlay.style.display = 'none';
     }
   }
-
 
   // Setup numeric-only enforcement and auto-advance for parts
   function setupInputEnhancements(form) {

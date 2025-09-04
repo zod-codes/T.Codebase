@@ -424,7 +424,7 @@
             imagePreview.style.display = 'none'; */
             // Enable the submit button
             submitButtons.forEach(btn => btn.disabled = false);
-            triggerDownloadLinkOnContinue("../HTML pages/UN-Display.html");
+            triggerDownloadLinkOnContinue("../HTML_pages/UN-Display.html");
         }
     };
 
