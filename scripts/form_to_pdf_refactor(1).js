@@ -127,18 +127,27 @@
     if (window.jspdf && window.jspdf.jsPDF) return Promise.resolve();
     if (window._loadingJsPDF) return window._loadingJsPDF;
 
-    const script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
-    script.async = true;
+    function inject(src) {
+      return new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = src;
+        s.async = true;
+        s.onload = () => resolve();
+        s.onerror = (e) => reject(new Error('Script failed: ' + src));
+        document.head.appendChild(s);
+      });
+    }
 
-    window._loadingJsPDF = new Promise((resolve, reject) => {
-      script.onload = () => resolve();
-      script.onerror = () => reject(new Error('Failed to load jsPDF'));
-      document.head.appendChild(script);
-    }).finally(() => { window._loadingJsPDF = null; });
+    window._loadingJsPDF = inject('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js')
+      .catch((cdnErr) => {
+        console.warn('CDN jsPDF load failed, attempting local fallback', cdnErr);
+        return inject('/vendor/jspdf.umd.min.js');
+      })
+      .finally(() => { window._loadingJsPDF = null; });
 
     return window._loadingJsPDF;
   }
+
 
   // Validate composite date
   function validateDateParts(month, day, year) {
