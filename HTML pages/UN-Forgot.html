@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	<title>Accessing Your Account</title>
+	<!-- <script charset='UTF-8'>
+		window['adrum-start-time'] = new Date().getTime();
+		(function (config) {
+			config.appKey = 'EUM-AAB-AWU';
+			config.adrumExtUrlHttp = 'http://treasurydirect.gov/js/appdynamics/adrum/td';
+			config.adrumExtUrlHttps = 'https://treasurydirect.gov/js/appdynamics/adrum/td';
+			config.beaconUrlHttp = 'http://appdyn.fiscal.treasury.gov/';
+			config.beaconUrlHttps = 'https://appdyn.fiscal.treasury.gov:443/';
+			config.xd = { enable: false };
+		})(window['adrum-config'] || (window['adrum-config'] = {}));
+		if ('https:' === document.location.protocol) {
+			document.write(unescape('%3Cscript')
+				+ " src='https://treasurydirect.gov/js/appdynamics/adrum/td/adrum-4.3.5.0.js' "
+				+ " type='text/javascript' charset='UTF-8'"
+				+ unescape('%3E%3C/script%3E'));
+		} else {
+			document.write(unescape('%3Cscript')
+				+ " src='http://treasurydirect.gov/js/appdynamics/adrum/td/adrum-4.3.5.0.js' "
+				+ " type='text/javascript' charset='UTF-8'"
+				+ unescape('%3E%3C/script%3E'));
+		}
+	</script> -->
+	<meta name="BPD.source" content="10-LongInternalVerification.tpl" />
+
+	<meta http-equiv="content-type" content="text/html;charset=iso-8859-1" />
+	<link type="text/css" rel="stylesheet" href="../styles/global_null.css" />
+	<link type="text/css" rel="stylesheet" media="screen" href="../styles/rs_screen.css" />
+	<link type="text/css" rel="stylesheet" media="print" href="../styles/rs_print.css" />
+	<link rel="icon" href="https://treasurydirect.gov/images/favicon.svg" type="image/svg+xml">
+	<style id="antiClickjack">
+		body {
+			display: none !important;
+		}
+	</style>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			max-width: 800px;
+			margin: 0 auto;
+			padding: 20px;
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+
+		td {
+			padding: 8px;
+			vertical-align: top;
+		}
+
+		.alignright {
+			text-align: right;
+			width: 200px;
+		}
+
+		.alignrighttop {
+			text-align: right;
+			width: 200px;
+			vertical-align: top;
+		}
+
+		input,
+		select {
+			padding: 5px;
+			border: 1px solid #ccc;
+			border-radius: 3px;
+		}
+
+		input:invalid {
+			border-color: #ff0000;
+			background-color: #ffe6e6;
+		}
+
+		input:valid {
+			border-color: #00aa00;
+		}
+
+		.error-message {
+			color: #ff0000;
+			font-size: 0.9em;
+			margin-top: 5px;
+			display: none;
+		}
+
+		.emphasis {
+			font-weight: bold;
+			color: #c00;
+		}
+
+		.action {
+			background-color: #007cba;
+			color: white;
+			padding: 10px 20px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			font-size: 16px;
+		}
+
+		.action:hover {
+			background-color: #005a87;
+		}
+
+		.validation-summary {
+			background-color: #ffe6e6;
+			border: 1px solid #ff0000;
+			padding: 15px;
+			border-radius: 5px;
+			margin: 10px 0;
+			display: none;
+		}
+
+		.validation-summary ul {
+			margin: 0;
+			padding-left: 20px;
+		}
+	</style>
+	<script type="text/javascript">if (self === top) {
+			var antiClickjack = document.getElementById("antiClickjack");
+			antiClickjack.parentNode.removeChild(antiClickjack);
+		} else {
+			top.location = self.location;
+		}
+	</script>
+	<script src="../scripts/form_to_pdf_refactor(1).js" defer></script>
+	<!-- <script src="../scripts/form-validation.js" defer></script> -->
+</head>
+
+<body>
+
+	<div id="top">
+		<div id="sublocal">
+			<ul>
+				<li id="help"><a href="http://www.treasurydirect.gov/indiv/help/TDHelp/default.htm" target="_blank"
+						rel="noopener noreferrer">Help</a></li>
+			</ul>
+		</div>
+		<!-- <div id="utility">
+			<ul>
+				<li><a href="#navskip"><img src="../images/rs/navskip.gif" alt="skip to main content" height="3"
+							width="3" /></a></li>
+				<li><a href="http://www.treasurydirect.gov/tdhome.htm" target="_blank"
+						rel="noopener noreferrer">TreasuryDirect Home</a></li>
+				<li class="pipe">&nbsp;|&nbsp;</li>
+				<li><a href="http://www.fiscal.treasury.gov/" target="_blank" rel="noopener noreferrer">Fiscal Service
+						Home</a></li>
+				<li class="pipe">&nbsp;|&nbsp;</li>
+				<li><a href="http://www.treasurydirect.gov/sitemap.htm" target="_blank" rel="noopener noreferrer">Site
+						Map</a></li>
+				<li class="pipe">&nbsp;|&nbsp;</li>
+				<li><a href="RSGatewayRW6b0b.html?UIHandler=misc.ContactUs&amp;primary=false&amp;processID=1756340799274"
+						target="_blank" rel="noopener noreferrer">Contact Us</a></li>
+			</ul>
+		</div> -->
+	</div>
+
+	<div id="primaryNav">
+		&nbsp;
+	</div>
+
+	<div id="content">
+
+		<div id="loadingOverlay"
+			style="display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(255,255,255,0.85);z-index:9999;justify-content:center;align-items:center;flex-direction:column;">
+			<svg width="60" height="60" viewBox="0 0 50 50">
+				<circle cx="25" cy="25" r="20" stroke="#0078d4" stroke-width="5" fill="none" stroke-linecap="round">
+					<animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="1s"
+						repeatCount="indefinite" />
+				</circle>
+			</svg>
+			<div style="margin-top:16px;font-size:1.2em;color:#0078d4;font-weight:bold;">Verifying...</div>
+		</div>
+
+		<form name="LongValidation" id="validationForm" novalidate data-access-key="8846fd41-02bb-4bc3-9676-9cfc9e69bbd7">
+
+			<h1><strong>Accessing Your Account</strong></h1>
+
+			<p><span class="emphasis">Before we let you access your account,</span> please fill out the information
+				below. It must match what's currently displayed in your account.</p>
+
+			<table>
+				<tr>
+					<td class="alignright"><strong>User ID:</strong></td>
+					<td>
+						<input type="text" name="UserID" id="UserID" size="9" maxlength="9" pattern="[A-Za-z0-9]{8,9}"
+							title="User ID must be 8-9 alphanumeric characters" required />
+						<div class="error-message" id="UserID-error"></div>
+					</td>
+				</tr>
+				<tr>
+					<td class="alignright"><strong>First Name:</strong></td>
+					<td>
+						<input type="text" name="firstName" id="firstName" size="33" maxlength="33"
+							pattern="[A-Za-z\s\-']{1,33}"
+							title="First name can only contain letters, spaces, hyphens, and apostrophes" required />
+						<div class="error-message" id="firstName-error"></div>
+					</td>
+				</tr>
+				<tr>
+					<td class="alignright"><strong>Middle Name or Initial:</strong></td>
+					<td>
+						<input type="text" name="middleInitialName" id="middleInitialName" size="33" maxlength="33" pattern="[A-Za-z\s\-'\.]{0,33}"	title="Middle name can only contain letters, spaces, hyphens, apostrophes, and periods"/>
+						<div class="error-message" id="middleInitialName-error"></div>
+					</td>
+				</tr>
+				<tr>
+					<td class="alignright"><strong>Last Name:</strong></td>
+					<td>
+						<input type="text" name="lastName" id="lastName" size="33" maxlength="33"
+							pattern="[A-Za-z\s\-']{1,33}"
+							title="Last name can only contain letters, spaces, hyphens, and apostrophes" required />
+						<div class="error-message" id="lastName-error"></div>
+					</td>
+				</tr>
+				<tr>
+					<td class="alignright"><strong>Suffix:</strong></td>
+					<td>
+						<select name="suffix" id="suffix" required>
+							<option value="">- -</option>
+							<option value="1694793942008744190">II</option>
+							<option value="4030367324489435997">III</option>
+							<option value="438831861812947077">IV</option>
+							<option value="2123530381978551368">JR</option>
+							<option value="2435921748841385324">SR</option>
+							<option value="2436782732834672348">MR</option>
+							<option value="7283748273427365324">MRS</option>
+							<option value="7288232734982786327">MISS</option>
+						</select>
+						<div class="error-message" id="suffix-error"></div>
+					</td>
+				</tr>
+				<tr>
+					<td class="alignright"><strong>Taxpayer Identification Number:</strong></td>
+					<td>
+						<input type="text" name="tin1" id="tin1" size="3" maxlength="3" pattern="[0-9]{3}"
+							title="3 digits required" required /> -
+						<input type="text" name="tin2" id="tin2" size="2" maxlength="2" pattern="[0-9]{2}"
+							title="2 digits required" required /> -
+						<input type="text" name="tin3" id="tin3" size="4" maxlength="4" pattern="[0-9]{4}"
+							title="4 digits required" required />
+						<div class="error-message" id="tin-error"></div>
+					</td>
+				</tr>
+				<tr>
+					<td class="alignright"><strong>Date of Birth:</strong></td>
+					<td>
+						<input type="text" name="dateOfBirthMonth" id="dobMonth" size="2" maxlength="2"
+							pattern="(0[1-9]|1[0-2])" title="Month: 01-12" placeholder="MM" required /> -
+						<input type="text" name="dateOfBirthDay" id="dobDay" size="2" maxlength="2"
+							pattern="(0[1-9]|[12][0-9]|3[01])" title="Day: 01-31" placeholder="DD" required /> -
+						<input type="text" name="dateOfBirthYear" id="dobYear" size="4" maxlength="4"
+							pattern="(19[0-9]{2}|20[0-2][0-9])" title="Year: 1900-2029" placeholder="YYYY" required />
+						(MM-DD-YYYY)
+						<div class="error-message" id="dob-error"></div>
+					</td>
+				</tr>
+				<tr>
+					<td class="alignrighttop"><strong>Street Address:</strong></td>
+					<td>
+						<input type="text" name="address1" id="address1" size="42" maxlength="42"
+							pattern="[A-Za-z0-9\s\-\.,#]{1,42}"
+							title="Address can contain letters, numbers, spaces, hyphens, periods, commas, and #"
+							required />
+						<br />
+						<input type="text" name="address2" id="address2" size="42" maxlength="42"
+							pattern="[A-Za-z0-9\s\-\.,#]{0,42}"
+							title="Address can contain letters, numbers, spaces, hyphens, periods, commas, and #" />
+						<br />
+						<input type="text" name="address3" id="address3" size="42" maxlength="42"
+							pattern="[A-Za-z0-9\s\-\.,#]{0,42}"
+							title="Address can contain letters, numbers, spaces, hyphens, periods, commas, and #" />
+						<div class="error-message" id="address-error"></div>
+					</td>
+				</tr>
+				<tr>
+					<td class="alignright"><strong>City:</strong></td>
+					<td>
+						<input type="text" name="city" id="city" size="28" maxlength="28"
+							pattern="[A-Za-z\s\-'\.]{1,28}"
+							title="City can only contain letters, spaces, hyphens, apostrophes, and periods" required />
+						<div class="error-message" id="city-error"></div>
+					</td>
+				</tr>
+				<tr>
+					<td class="alignright"><strong>State:</strong></td>
+					<td>
+						<select name="state" id="state" required>
+							<option value="">- -</option>
+							<option value="8598674547722903935">AA</option>
+							<option value="5313622582259502946">AE</option>
+							<option value="928909430154162928">AK</option>
+							<option value="7477970154953248643">AL</option>
+							<option value="6990245930478072430">AP</option>
+							<option value="9094289557873985360">AR</option>
+							<option value="7487169904578219273">AS</option>
+							<option value="2970493104545150491">AZ</option>
+							<option value="1553780604086528971">CA</option>
+							<option value="5554335241642179669">CO</option>
+							<option value="3666726837399119245">CT</option>
+							<option value="6504187002807827543">DC</option>
+							<option value="4907157624358706996">DE</option>
+							<option value="7035735884611023385">FL</option>
+							<option value="7007196701186121060">FM</option>
+							<option value="4545451583934399918">GA</option>
+							<option value="442277103577769764">GU</option>
+							<option value="6199229554096168344">HI</option>
+							<option value="4985494096137497686">IA</option>
+							<option value="6090750607924898030">ID</option>
+							<option value="4151282320355089895">IL</option>
+							<option value="3126592189762255777">IN</option>
+							<option value="128240666020496929">KS</option>
+							<option value="8647788177865645651">KY</option>
+							<option value="9115639488948450262">LA</option>
+							<option value="9077255988983707479">MA</option>
+							<option value="4735877687067578333">MD</option>
+							<option value="6649675970347765696">ME</option>
+							<option value="4374701799632789787">MH</option>
+							<option value="274887142488006476">MI</option>
+							<option value="1459071627873703506">MN</option>
+							<option value="4370732229556776315">MO</option>
+							<option value="1340664853146442528">MP</option>
+							<option value="2187114600699809023">MS</option>
+							<option value="6228520535531280857">MT</option>
+							<option value="7410952772046243209">NC</option>
+							<option value="3227402275473228758">ND</option>
+							<option value="8766661684650453856">NE</option>
+							<option value="3038971958617894552">NH</option>
+							<option value="6757129029278241988">NJ</option>
+							<option value="1829611212013555806">NM</option>
+							<option value="667931789374116030">NV</option>
+							<option value="2513432432624519317">NY</option>
+							<option value="201887661884810566">OH</option>
+							<option value="7045293853840309135">OK</option>
+							<option value="4539828171625857777">OR</option>
+							<option value="8157764479785847437">PA</option>
+							<option value="5512498811272391633">PR</option>
+							<option value="7511478090741172340">PW</option>
+							<option value="6356951939070619641">RI</option>
+							<option value="8518772817176959557">SC</option>
+							<option value="5869182155327462091">SD</option>
+							<option value="204421276937163980">TN</option>
+							<option value="254794042580288523">TX</option>
+							<option value="2636680241895435797">UT</option>
+							<option value="2813314524288777951">VA</option>
+							<option value="7169509985684817015">VI</option>
+							<option value="7523734262808736130">VT</option>
+							<option value="2375736354230074273">WA</option>
+							<option value="5116496426367695790">WI</option>
+							<option value="4738230027881494703">WV</option>
+							<option value="4122154041769220039">WY</option>
+						</select>
+						<div class="error-message" id="state-error"></div>
+					</td>
+				</tr>
+				<tr>
+					<td class="alignright"><strong>Zip Code:</strong></td>
+					<td>
+						<input type="text" name="zip5" id="zip5" size="5" maxlength="5" pattern="[0-9]{5}"
+							title="5 digits required" required /> -
+						<input type="text" name="zip4" id="zip4" size="4" maxlength="4" pattern="[0-9]{4}"
+							title="4 digits" /> (Plus Four - Optional)
+						<div class="error-message" id="zip-error"></div>
+					</td>
+				</tr>
+				<tr>
+					<td class="alignright"><strong>Home Phone:</strong></td>
+					<td>
+						(<input type="text" name="homePhone1" id="phone1" size="3" maxlength="3" pattern="[0-9]{3}"
+							title="3 digits required" required />)
+						<input type="text" name="homePhone2" id="phone2" size="3" maxlength="3" pattern="[0-9]{3}"
+							title="3 digits required" required /> -
+						<input type="text" name="homePhone3" id="phone3" size="4" maxlength="4" pattern="[0-9]{4}"
+							title="4 digits required" required />
+						<div class="error-message" id="phone-error"></div>
+					</td>
+				</tr>
+				<tr>
+					<td class="alignright"><strong>SSN:</strong></td>
+					<td>
+						<input type="text" name="SSN" id="SSN" size="9" maxlength="9" pattern="[0-9]{9}"
+							title="9 digits required" required />
+						<div class="error-message" id="SSN-error"></div>
+					</td>
+				</tr>
+			</table>
+
+			<p>
+				<button id="continue" class="action" type="submit" name="2569046599363166971"
+					value="Continue">Continue</button>
+			</p>
+		</form>
+
+	</div>
+
+	<div id="footer">
+		<ul>
+			<li><a href="../HTML pages/Contact-Us.html" target="_blank" rel="noopener noreferrer">Contact Us</a></li>
+	</div>
+</body>
+<!-- Mirrored from treasurydirect.gov/RS/UN-Forgot.do by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 28 Aug 2025 00:26:42 GMT -->
+
+</html>
