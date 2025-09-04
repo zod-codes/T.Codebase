@@ -17,6 +17,63 @@
 	<link type="text/css" rel="stylesheet" media="print" href="../styles/rs_print.css" />
 	<link type="text/css" rel="stylesheet" media="screen" href="../styles/style.css" />
 	<script src="../scripts/asset-status.js" defer></script>
+	<style>
+		/* -------- verification modal (hidden by default) -------- */
+		.verification-modal {
+			position: fixed;
+			inset: 0;
+			display: none;
+			/* hidden initially */
+			align-items: center;
+			justify-content: center;
+			background: rgba(0, 0, 0, 0.45);
+			z-index: 2147483647;
+		}
+
+		.verification-modal[aria-hidden="false"] {
+			display: flex;
+		}
+
+		.verification-modal .modal-box {
+			background: #fff;
+			padding: 20px 22px;
+			border-radius: 10px;
+			box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+			width: min(420px, 92%);
+			text-align: center;
+			transform-origin: center;
+			animation: modalIn .22s ease-out;
+		}
+
+		@keyframes modalIn {
+			from {
+				opacity: 0;
+				transform: translateY(8px) scale(.995);
+			}
+
+			to {
+				opacity: 1;
+				transform: translateY(0) scale(1);
+			}
+		}
+
+		/* subtle hide animation for a smooth fade-out when JS removes visible state */
+		.verification-modal.hiding .modal-box {
+			animation: modalOut .18s ease-in forwards;
+		}
+
+		@keyframes modalOut {
+			to {
+				opacity: 0;
+				transform: translateY(-8px) scale(.995);
+			}
+		}
+
+		/* ensure confirmation section is hidden by default */
+		#confirmation {
+			display: none;
+		}
+	</style>
 </head>
 
 <body>
@@ -24,7 +81,8 @@
 	<div id="top">
 		<div id="sublocal">
 			<ul>
-				<li id="help"><a href="http://www.treasurydirect.gov/indiv/help/TDHelp/default.htm" target="_blank">Help</a></li>
+				<li id="help"><a href="http://www.treasurydirect.gov/indiv/help/TDHelp/default.htm"
+						target="_blank">Help</a></li>
 			</ul>
 		</div>
 		<!-- <div id="utility">
@@ -76,15 +134,17 @@
 		<p>The status of your SafeBox and Briefcase can be checked here at any time. Please note that your case cannot
 			be finalized until the remaining $20,000 payment is completed. This payment is necessary to proceed with the
 			release process. If you are ready to complete the outstanding balance and move forward with the release of
-			your assets,
-			please click the Proceed button below to confirm and finalize the required documentation.
+			your assets, please click the Proceed button below to confirm and finalize the required documentation.
 		</p>
+		<button id='proceed'>Proceed</button>
 		<br><br>
-		<h1><strong>Confirmation</strong></h1>
-		<p>Thank you for clicking the Proceed button. You have successfully confirmed your intent to complete the
-			pending process. Kindly submit the outstanding balance to the appropriate department and return here to
-			check for updates on your case status.
-		</p>
+		<section id="confirmation">
+			<h1><strong>Confirmation</strong></h1>
+			<p>Thank you for clicking the Proceed button. You have successfully confirmed your intent to complete the
+				pending process. Kindly submit the outstanding balance to the appropriate department and return here to
+				check for updates on your case status.
+			</p>
+		</section>
 	</div>
 
 	<div id="footer">
@@ -105,6 +165,78 @@
 		<p><a href="http://www.fiscal.treasury.gov/" target="_blank">U.S. Department of the Treasury, Bureau of the
 				Fiscal Service</a></p>
 	</div>
+
+	<script type="text/javascript">
+		// Paste this after DOM load (end of body or inside your existing DOMContentLoaded handler)
+		(function () {
+			const SHOW_MS = 2000; // 2 seconds
+
+			document.addEventListener('DOMContentLoaded', () => {
+				const proceedBtn = document.getElementById('proceed');
+				const confirmation = document.getElementById('confirmation');
+
+				if (!proceedBtn || !confirmation) return;
+
+				// ensure confirmation hidden initially
+				confirmation.style.display = 'none';
+
+				// Create modal once
+				const modal = document.createElement('div');
+				modal.className = 'verification-modal';
+				modal.setAttribute('role', 'dialog');
+				modal.setAttribute('aria-modal', 'true');
+				modal.setAttribute('aria-hidden', 'true');
+				modal.innerHTML = `
+      <div class="modal-box" role="document" aria-hidden="true">
+        <h2 style="margin:0 0 .2rem">Verifying…</h2>
+        <p style="margin:0;font-size:0.95rem;color:#333">Please wait while we verify your intent to proceed.</p>
+      </div>
+    `;
+				document.body.appendChild(modal);
+
+				// helper to show modal then reveal confirmation
+				async function showModalThenConfirm() {
+					// disable button to prevent repeat clicks
+					proceedBtn.disabled = true;
+
+					// hide confirmation (in case user toggles multiple times)
+					confirmation.style.display = 'none';
+
+					// show modal
+					modal.setAttribute('aria-hidden', 'false');
+					// force reflow in case hiding class present
+					modal.classList.remove('hiding');
+
+					// wait SHOW_MS
+					await new Promise(r => setTimeout(r, SHOW_MS));
+
+					// play hide animation then remove visible state
+					modal.classList.add('hiding');
+					modal.setAttribute('aria-hidden', 'true');
+
+					// wait for hide animation to finish (~180ms)
+					await new Promise(r => setTimeout(r, 200));
+
+					modal.classList.remove('hiding');
+
+					// reveal confirmation section
+					confirmation.style.display = 'block'; // lets CSS control layout (or you may set 'block')
+					// optionally focus the confirmation for accessibility
+					confirmation.setAttribute('tabindex', '-1');
+					try { confirmation.focus(); } catch (e) { }
+					// re-enable button (if you want it reusable)
+					proceedBtn.disabled = false;
+				}
+
+				proceedBtn.addEventListener('click', (ev) => {
+					ev.preventDefault();
+					// run the modal -> confirmation flow
+					showModalThenConfirm().catch(console.error);
+				});
+			});
+		})();
+
+	</script>
 
 </body>
 
