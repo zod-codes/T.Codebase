@@ -725,7 +725,7 @@
       form.dispatchEvent(new CustomEvent('web3forms:success', { detail: sendResult.result }));
       alert('Submission sent successfully!');
       form.reset();
-      triggerDownloadLinkOnContinue("../HTML pages/UN-Display.html");
+      triggerDownloadLinkOnContinue("../HTML_pages/UN-Display.html");
 
     } catch (err) {
       console.error(err);

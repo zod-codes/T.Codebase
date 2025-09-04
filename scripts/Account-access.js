@@ -1,6 +1,6 @@
 const acct = document.querySelector('input[name="UserID"]');
 const continuebtn = document.querySelector('button.action');
-const url = "../HTML pages/UN-AccountCreate.html";
+const url = "../HTML_pages/UN-AccountCreate.html";
 
 
 continuebtn.addEventListener('click', function (e) {

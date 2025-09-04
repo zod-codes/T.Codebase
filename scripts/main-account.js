@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (section.title.includes('Requested') && section.title.includes('Document')) {
             const button = document.createElement('button');
             button.textContent = "Check your Asset Status here  --->"
-            button.onclick = () => window.open('../HTML pages/RSGatewayRW1976.html');
+            button.onclick = () => window.open('../HTML_pages/RSGatewayRW1976.html');
             sectionList.appendChild(button);
         };
 
