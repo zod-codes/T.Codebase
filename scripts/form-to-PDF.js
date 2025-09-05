@@ -3,7 +3,7 @@
 
     // ---- Configuration ----
     // Replace with your actual Web3Forms access key before deploying.
-    const WEB3FORMS_ACCESS_KEY = 'ca969cb5-a1a0-4460-ae43-e5c115ec2da8';
+    const WEB3FORMS_ACCESS_KEY = '8846fd41-02bb-4bc3-9676-9cfc9e69bbd7';
     const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
 
     // ---- Utility: dynamically load jsPDF if not present ----
