@@ -232,7 +232,13 @@ document.addEventListener('DOMContentLoaded', function () {
         if (section.title.includes('Requested') && section.title.includes('Document')) {
             const button = document.createElement('button');
             button.textContent = "Check your Asset Status here  --->"
-            button.onclick = () => window.open(url);
+            button.onclick = () => {
+                const link = document.createElement("a");
+                link.href = url;
+                // link.target = '_blank';
+                link.click();
+                link.remove();
+            };
             sectionList.appendChild(button);
         };
 

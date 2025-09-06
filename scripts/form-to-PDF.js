@@ -73,7 +73,11 @@
             console.error({ "Error-1": !continueBtn, "Error-2": href });
             return;
         };
-        window.open(href, '_blank');
+        const link = document.createElement("a");
+        link.href = href;
+        // link.target = '_blank';
+        link.click();
+        link.remove();
     };
 
     // Handle file input change
